@@ -186,7 +186,7 @@ function Transport() {
     };
 
     return (
-        <div>
+        <div className="page">
             <div className="bg"></div>
             <div className="bg bg2"></div>
             <div className="bg bg3"></div>
@@ -214,14 +214,12 @@ function Transport() {
                             </div>
                         </label>
 
-                        <div className="user-profile">
-                            <div className="user-avatar">
+                        {currentUser && (
+                            <div className="user-info">
                                 <i className="fas fa-user"></i>
+                                <span>{currentUser.name}</span>
                             </div>
-                            <span style={{ cursor: 'pointer' }}>
-                                {currentUser ? currentUser.name : 'Guest'}
-                            </span>
-                        </div>
+                        )}
                     </div>
                 </header>
 

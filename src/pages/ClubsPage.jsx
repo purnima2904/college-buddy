@@ -314,7 +314,7 @@ function ClubsPage() {
     };
 
     return (
-        <div className="clubs-page">
+        <div className="page">
             <div className="bg"></div>
             <div className="bg bg2"></div>
             <div className="bg bg3"></div>
