@@ -679,21 +679,14 @@
   background-color: #1e293b;
 }
 
-[data-theme="dark"] .favorites-toggle {
-  background-color: #334155;
-  color: #e2e8f0;
-}
-
-[data-theme="dark"] .favorites-toggle:hover {
-  background-color: #475569;
-}
-
 [data-theme="dark"] .stop-location {
   background-color: rgba(74, 103, 247, 0.15);
+  color: #f1f5f9; /* Changed to match text-primary for better visibility */
 }
 
 [data-theme="dark"] .stop-location:hover {
   background-color: rgba(74, 103, 247, 0.25);
+  color: #ffffff; /* Even brighter on hover */
 }
 
 [data-theme="dark"] .stop-time {

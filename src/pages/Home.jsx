@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+
 function Home() {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [activeTab, setActiveTab] = useState('Home');
@@ -148,7 +149,7 @@ function Home() {
         const tabCardMapping = {
             'Schedule': ['Teacher Availability'],
             'Clubs': ['College Clubs'],
-            'Resources': ['Resource Sharing', 'Peer Study Groups', 'Discussion Forums'],
+            'Resources': ['Resource Sharing', 'Peer Study Groups', 'Discussion Forums', 'Alumni Connect'], // Added 'Alumni Connect' to Resources tab
             'Transport': ['Campus Transport']
         };
 
@@ -452,31 +453,43 @@ function Home() {
                         <div className="footer-section links">
                             <h4>Quick Links</h4>
                             <ul>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); handleTabClick('Home') }}>Home</a></li>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); handleTabClick('Schedule') }}>Schedule</a></li>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); handleTabClick('Clubs') }}>Clubs</a></li>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); handleTabClick('Resources') }}>Resources</a></li>
-                                <li><a href="#" onClick={(e) => { e.preventDefault(); handleTabClick('Transport') }}>Transport</a></li>
+                                {/* Fixed href warnings by using buttons styled as links */}
+                                <li><button className="link-button" onClick={() => handleTabClick('Home')}>Home</button></li>
+                                <li><button className="link-button" onClick={() => handleTabClick('Schedule')}>Schedule</button></li>
+                                <li><button className="link-button" onClick={() => handleTabClick('Clubs')}>Clubs</button></li>
+                                <li><button className="link-button" onClick={() => handleTabClick('Resources')}>Resources</button></li>
+                                <li><button className="link-button" onClick={() => handleTabClick('Transport')}>Transport</button></li>
                             </ul>
                         </div>
 
                         <div className="footer-section social">
                             <h4>Connect With Us</h4>
                             <div className="social-icons">
-                                <a href="#"><i className="fab fa-facebook"></i></a>
-                                <a href="#"><i className="fab fa-twitter"></i></a>
-                                <a href="#"><i className="fab fa-instagram"></i></a>
-                                <a href="#"><i className="fab fa-linkedin"></i></a>
-                                <a href="#"><i className="fab fa-youtube"></i></a>
+                                {/* Fixed href warnings by using buttons styled as links with appropriate aria-labels */}
+                                <button className="social-button" aria-label="Facebook">
+                                    <i className="fab fa-facebook"></i>
+                                </button>
+                                <button className="social-button" aria-label="Twitter">
+                                    <i className="fab fa-twitter"></i>
+                                </button>
+                                <button className="social-button" aria-label="Instagram">
+                                    <i className="fab fa-instagram"></i>
+                                </button>
+                                <button className="social-button" aria-label="LinkedIn">
+                                    <i className="fab fa-linkedin"></i>
+                                </button>
+                                <button className="social-button" aria-label="YouTube">
+                                    <i className="fab fa-youtube"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
                     <div className="footer-bottom">
                         <p>&copy; {new Date().getFullYear()} College Buddy | MIT ADT University | All Rights Reserved</p>
                         <div className="footer-bottom-links">
-                            <a href="#">Privacy Policy</a>
-                            <a href="#">Terms of Service</a>
-                            <a href="#">FAQ</a>
+                            <button className="link-button">Privacy Policy</button>
+                            <button className="link-button">Terms of Service</button>
+                            <button className="link-button">FAQ</button>
                         </div>
                     </div>
                 </footer>
