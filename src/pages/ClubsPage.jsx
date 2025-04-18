@@ -349,9 +349,6 @@ function ClubsPage() {
                     </div>
                 </header>
 
-                <div className="welcome-banner">
-                    <p>Discover and join vibrant campus clubs that match your interests</p>
-                </div>
                 <div className="clubs-filter-section">
                     <div className="search-bar">
                         <i className="fas fa-search search-icon"></i>

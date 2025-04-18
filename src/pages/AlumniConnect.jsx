@@ -11,6 +11,8 @@ function AlumniConnect() {
     const [showRegistrationPopup, setShowRegistrationPopup] = useState(false);
     const [showAlumniDetailPopup, setShowAlumniDetailPopup] = useState(false);
     const [selectedAlumni, setSelectedAlumni] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingId, setEditingId] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [filters, setFilters] = useState({
@@ -254,21 +256,32 @@ function AlumniConnect() {
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Generate a unique ID for the new alumni
-        const newAlumni = {
-            id: alumni.length + 1,
-            ...formData
-        };
-
-        // Add the new alumni to the list
-        setAlumni(prev => [...prev, newAlumni]);
-
+    
+        if (isEditing) {
+            // Update existing alumni profile
+            setAlumni(prev => prev.map(alum => 
+                alum.id === editingId ? { ...formData, id: editingId } : alum
+            ));
+            
+            // Reset editing state
+            setIsEditing(false);
+            setEditingId(null);
+        } else {
+            // Generate a unique ID for the new alumni
+            const newAlumni = {
+                id: alumni.length + 1,
+                ...formData
+            };
+    
+            // Add the new alumni to the list
+            setAlumni(prev => [...prev, newAlumni]);
+        }
+    
         // Reset form and close popup
         setShowRegistrationPopup(false);
         setCurrentStep(1);
-
-        alert('Registration successful! Your alumni profile has been created.');
+    
+        alert(isEditing ? 'Profile updated successfully!' : 'Registration successful! Your alumni profile has been created.');
     };
 
     // Handle view alumni detail
@@ -276,28 +289,39 @@ function AlumniConnect() {
         setSelectedAlumni(alum);
         setShowAlumniDetailPopup(true);
     };
+    
+    
+// Update the isCurrentUserAlumni function to check by roll number instead of email
+const isCurrentUserAlumni = (alum) => {
+    return currentUser && 
+           currentUser.rollNumber && 
+           alum.personalInfo.rollNumber && 
+           currentUser.rollNumber === alum.personalInfo.rollNumber;
+};
 
-    // Handle delete alumni profile
-    const handleDeleteProfile = (id) => {
-        if (window.confirm('Are you sure you want to delete your alumni profile? This action cannot be undone.')) {
-            setAlumni(prev => prev.filter(alum => alum.id !== id));
-            setShowAlumniDetailPopup(false);
-            alert('Your alumni profile has been deleted successfully.');
-        }
-    };
-
-    // Handle update alumni profile
-    const handleUpdateProfile = (alum) => {
-        setFormData({
-            personalInfo: { ...alum.personalInfo },
-            professionalInfo: { ...alum.professionalInfo },
-            profileContent: { ...alum.profileContent },
-            socialLinks: { ...alum.socialLinks }
-        });
-
+// The rest of the functions remain the same
+const handleDeleteProfile = (id) => {
+    if (window.confirm('Are you sure you want to delete your alumni profile? This action cannot be undone.')) {
+        setAlumni(prev => prev.filter(alum => alum.id !== id));
         setShowAlumniDetailPopup(false);
-        setShowRegistrationPopup(true);
-    };
+        alert('Your alumni profile has been deleted successfully.');
+    }
+};
+
+// Handle update alumni profile
+const handleUpdateProfile = (alum) => {
+    setFormData({
+        personalInfo: { ...alum.personalInfo },
+        professionalInfo: { ...alum.professionalInfo },
+        profileContent: { ...alum.profileContent },
+        socialLinks: { ...alum.socialLinks }
+    });
+    
+    setIsEditing(true);
+    setEditingId(alum.id);
+    setShowAlumniDetailPopup(false);
+    setShowRegistrationPopup(true);
+};
 
     // Reset form on popup close
     const handleClosePopup = () => {
@@ -319,12 +343,6 @@ function AlumniConnect() {
 
     const uniqueGraduationYears = getUniqueValues('personalInfo', 'graduationYear');
     const uniqueDepartments = getUniqueValues('personalInfo', 'department');
-    const uniqueIndustries = getUniqueValues('professionalInfo');
-
-    // Check if current user is the alumni
-    const isCurrentUserAlumni = (alum) => {
-        return currentUser && currentUser.email === alum.personalInfo.email;
-    };
 
     // Initialize theme on component mount
     useEffect(() => {
@@ -387,10 +405,6 @@ function AlumniConnect() {
                         )}
                     </div>
                 </header>
-
-                <div className="welcome-banner">
-                    <p>Connect with MIT ADT University graduates around the world.</p>
-                </div>
 
                 <div className="alumni-controls">
                     <div className="search-filter-container">

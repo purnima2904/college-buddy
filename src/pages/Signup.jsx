@@ -9,7 +9,8 @@ function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [type, setType] = useState('student');
-  const [clubId, setClubId] = useState('');  // Changed clubName to clubId
+  const [rollNumber, setRollNumber] = useState('');  // Added rollNumber state
+  const [clubId, setClubId] = useState('');
   const [isClubMember, setIsClubMember] = useState(false);
   const [error, setError] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -52,6 +53,12 @@ function Signup() {
       return;
     }
 
+    // Validate roll number for students
+    if (type === 'student' && !rollNumber) {
+      setError('Please enter your roll number');
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -63,7 +70,8 @@ function Signup() {
       email,
       password,
       type,
-      clubId, // Store club ID instead of name and title
+      rollNumber: type === 'student' ? rollNumber : '', // Add roll number for students
+      clubId,
       createdAt: new Date().toISOString()
     };
 
@@ -80,7 +88,7 @@ function Signup() {
           phone: '',
           available: true,
           timetable: [],
-          clubId // Pass club ID for teachers too
+          clubId
         });
       }
 
@@ -250,6 +258,29 @@ function Signup() {
                   </label>
                 </div>
               </div>
+
+              {/* Roll Number Field - Only shows for students */}
+              {type === 'student' && (
+                <div style={{ marginBottom: '15px' }}>
+                  <label htmlFor="rollNumber" style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Roll Number</label>
+                  <input
+                    type="text"
+                    id="rollNumber"
+                    value={rollNumber}
+                    onChange={(e) => setRollNumber(e.target.value)}
+                    required
+                    placeholder="e.g. CE2020001"
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      borderRadius: 'var(--border-radius)',
+                      border: '1px solid rgba(0, 0, 0, 0.1)',
+                      backgroundColor: 'var(--card-bg)',
+                      color: 'var(--dark-text)'
+                    }}
+                  />
+                </div>
+              )}
 
               {/* Club Member Checkbox */}
               <div style={{ marginBottom: '15px' }}>
