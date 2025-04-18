@@ -219,12 +219,17 @@ function Home() {
             buttonText: 'Join Groups'
         },
         {
-            id: 'discussion-forums',
-            title: 'Discussion Forums',
-            icon: 'fas fa-comments',
+            id: 'alumni-connect',
+            title: 'Alumni Connect',
+            icon: 'fas fa-user-graduate',
             color: 'color7',
-            description: 'Engage in meaningful academic conversations with peers and faculty through moderated discussion boards. Ask questions, share insights, participate in course discussions, and build a supportive community for intellectual growth.',
-            buttonText: 'Start Discussion'
+            description: 'Connect with MIT ADT University graduates around the world. Build your professional network, find mentors, and explore career opportunities through our alumni community.',
+            buttonText: 'Connect Now',
+            hasCustomOptions: true,
+            customHandler: (e) => {
+                e.stopPropagation();
+                navigate('/alumni');
+            }
         },
         {
             id: 'contact-info',
@@ -464,13 +469,6 @@ function Home() {
                                 <a href="#"><i className="fab fa-linkedin"></i></a>
                                 <a href="#"><i className="fab fa-youtube"></i></a>
                             </div>
-                            <div className="app-download">
-                                <h4>Get Our App</h4>
-                                <div className="app-links">
-                                    <a href="#"><i className="fab fa-google-play"></i> Google Play</a>
-                                    <a href="#"><i className="fab fa-apple"></i> App Store</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div className="footer-bottom">
@@ -483,7 +481,6 @@ function Home() {
                     </div>
                 </footer>
             </div>
-
         </div>
     );
 }

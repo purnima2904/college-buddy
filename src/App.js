@@ -10,6 +10,7 @@ import ClubsPage from './pages/ClubsPage'
 import ClubDetailPage from './pages/ClubDetailPage';
 import ScrollToTopButton from './pages/ScrollToTopButton';
 import Transport from './pages/Transport';
+import AlumniConnect from './pages/AlumniConnect';
 
 const ProtectedRoute = ({ element, role, ...rest }) => {
   const { isAuthenticated, currentUser } = useAuth();
@@ -42,6 +43,8 @@ function App() {
         <Route path="/clubs/:clubId" element={<ClubDetailPage />} />
         <Route path="/transport" element={<Transport />} />
         <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/alumni" element={<AlumniConnect />} />
+
       </Routes>
       <ScrollToTopButton />
     </BrowserRouter>

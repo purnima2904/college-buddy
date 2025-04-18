@@ -23,7 +23,7 @@
 }
 
 .pin-route-btn:hover {
-  color: #555;
+  color: #7d7777;
   transform: scale(1.1);
 }
 
@@ -93,8 +93,8 @@
 }
 
 [data-theme="dark"] .route-tab.active {
-  color: #22324f;
-  border-bottom-color: #22324f;
+  color: white;
+  border-bottom-color: #a6b1c5;
 }
 
 [data-theme="dark"] .pin-route-btn {
@@ -160,29 +160,6 @@
   outline: none;
   box-shadow: 0 0 0 3px rgba(74, 103, 247, 0.15);
   background-color: #ffffff;
-}
-
-.favorites-toggle {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  cursor: pointer;
-  padding: 0.75rem 1.25rem;
-  border-radius: 30px; /* Oval favorites toggle */
-  background-color: var(--bg-secondary, #f1f5f9);
-  transition: all 0.3s ease;
-  user-select: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-  font-weight: 500;
-}
-
-.favorites-toggle:hover {
-  background-color: var(--bg-hover, #e2e8f0);
-  transform: translateY(-1px);
-}
-
-.favorites-toggle input {
-  margin-right: 0.5rem;
 }
 
 /* Routes container styles - redesigned */
