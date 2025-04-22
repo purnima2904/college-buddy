@@ -142,7 +142,7 @@ function TeacherView() {
       const updatedTeacher = TeacherService.updateTeacher(teacherProfile.email, {
         ...formData,
         timetable,
-        timetableImage,
+        timetableImage: teacherProfile.timetableImage, // Preserve existing timetable image
         timetableDisplayMode
       });
       
@@ -171,9 +171,16 @@ function TeacherView() {
     const updatedTimetable = [...timetable, newSlot];
     setTimetable(updatedTimetable);
     
-    // Save to service
+    // Save to service - preserving timetable image
     if (teacherProfile) {
-      TeacherService.updateTimetable(teacherProfile.email, updatedTimetable);
+      const updatedTeacher = TeacherService.updateTeacher(teacherProfile.email, {
+        ...teacherProfile,
+        timetable: updatedTimetable
+      });
+      
+      if (updatedTeacher) {
+        setTeacherProfile(updatedTeacher);
+      }
     }
     
     // Reset form
@@ -190,9 +197,16 @@ function TeacherView() {
     const updatedTimetable = timetable.filter((_, i) => i !== index);
     setTimetable(updatedTimetable);
     
-    // Save to service
+    // Save to service - preserving timetable image
     if (teacherProfile) {
-      TeacherService.updateTimetable(teacherProfile.email, updatedTimetable);
+      const updatedTeacher = TeacherService.updateTeacher(teacherProfile.email, {
+        ...teacherProfile,
+        timetable: updatedTimetable
+      });
+      
+      if (updatedTeacher) {
+        setTeacherProfile(updatedTeacher);
+      }
     }
   };
 
@@ -234,7 +248,25 @@ function TeacherView() {
       });
       
       if (updated) {
+        setTeacherProfile(updated);
         alert('Timetable image saved successfully');
+      }
+    }
+  };
+
+  // New function to remove timetable image
+  const handleRemoveTimetableImage = () => {
+    if (teacherProfile) {
+      const updated = TeacherService.updateTeacher(teacherProfile.email, {
+        ...teacherProfile,
+        timetableImage: null
+      });
+      
+      if (updated) {
+        setTeacherProfile(updated);
+        setTimetableImage(null);
+        setTimetableImagePreview(null);
+        alert('Timetable image removed successfully');
       }
     }
   };
@@ -258,7 +290,7 @@ function TeacherView() {
       <div className="teacher-view">
         <header>
           <Link to="/Home" className="back-home-button">Back to Home</Link>
-          <div className="logo">College Buddy - Teacher Portal</div>
+          <div className="logo">Teacher Portal</div>
           <div className="header-controls">
             <label className="theme-toggle">
               <input
@@ -281,10 +313,6 @@ function TeacherView() {
             </div>
           </div>
         </header>
-        
-        <div className="welcome-banner">
-          <h2>Welcome to your Teacher Dashboard</h2>
-        </div>
         
         <div className="profile-container">
           <div className="profile-header">
@@ -531,13 +559,24 @@ function TeacherView() {
                   </div>
                 )}
                 
-                <button 
-                  className="save-button"
-                  onClick={handleSaveTimetableImage}
-                  disabled={!timetableImage}
-                >
-                  Save Timetable Image
-                </button>
+                <div className="image-actions">
+                  <button 
+                    className="save-button"
+                    onClick={handleSaveTimetableImage}
+                    disabled={!timetableImage}
+                  >
+                    Save Timetable Image
+                  </button>
+                  
+                  {timetableImagePreview && (
+                    <button 
+                      className="delete-button"
+                      onClick={handleRemoveTimetableImage}
+                    >
+                      Remove Image
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           )}
