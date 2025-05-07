@@ -37,6 +37,7 @@
 
 .welcome-popup {
   background-color: var(--card-bg, #fff);
+  color: var(--text-color, #333);
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   max-width: 600px;
@@ -55,7 +56,7 @@
   align-items: center;
   padding: 15px 20px;
   border-bottom: 1px solid var(--border-color, #eee);
-  background: linear-gradient(135deg, #2196f3, #0d47a1);
+  background: linear-gradient(135deg, var(--primary-color, #2196f3), var(--primary-dark, #0d47a1));
   color: white;
   border-radius: 7px 7px 0 0;
 }
@@ -86,7 +87,7 @@
 .welcome-popup .popup-content {
   padding: 30px;
   text-align: center;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95), rgba(245, 245, 245, 0.9));
+  background: var(--popup-content-bg, radial-gradient(circle at center, rgba(255, 255, 255, 0.95), rgba(245, 245, 245, 0.9)));
   position: relative;
   overflow: hidden;
   border-radius: 0 0 7px 7px;
@@ -110,7 +111,7 @@
 
 .welcome-popup h2 {
   margin-top: 0;
-  color: #0d47a1;
+  color: var(--heading-color, #0d47a1);
   font-size: 1.8rem;
   margin-bottom: 15px;
   position: relative;
@@ -124,7 +125,7 @@
   width: 70%;
   height: 3px;
   margin: 5px auto 0;
-  background: linear-gradient(to right, transparent, #2196f3, transparent);
+  background: linear-gradient(to right, transparent, var(--primary-color, #2196f3), transparent);
   animation: slideWidth 3s infinite alternate;
 }
 
@@ -138,7 +139,7 @@
 }
 
 .welcome-popup p {
-  color: #333;
+  color: var(--text-color, #333);
   line-height: 1.6;
   margin-bottom: 25px;
   font-size: 1.05rem;
@@ -146,57 +147,8 @@
   position: relative;
 }
 
-.welcome-features {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin: 30px 0;
-  position: relative;
-  z-index: 5;
-}
-
-.welcome-feature {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(33, 150, 243, 0.2);
-}
-
-.welcome-feature:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  background-color: rgba(33, 150, 243, 0.1);
-}
-
-.welcome-feature i {
-  font-size: 1.3rem;
-  color: var(--primary-color, #2196f3);
-  margin-right: 12px;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.7;
-  }
-}
-
-.welcome-feature span {
-  font-weight: 500;
-  color: #333;
-}
-
 .get-started-btn {
-  background: linear-gradient(135deg, #2196f3, #0d47a1);
+  background: linear-gradient(135deg, var(--primary-color, #2196f3), var(--primary-dark, #0d47a1));
   color: white;
   border: none;
   border-radius: 25px;
@@ -292,5 +244,54 @@
   
   .welcome-popup h2 {
     font-size: 1.5rem;
+  }
+}
+
+/* Dark mode support */
+:root {
+  --card-bg: #fff;
+  --text-color: #333;
+  --heading-color: #0d47a1;
+  --border-color: #eee;
+  --primary-color: #2196f3;
+  --primary-dark: #0d47a1;
+  --popup-content-bg: radial-gradient(circle at center, rgba(255, 255, 255, 0.95), rgba(245, 245, 245, 0.9));
+  --feature-bg: rgba(255, 255, 255, 0.8);
+  --feature-border: rgba(33, 150, 243, 0.2);
+  --feature-hover-bg: rgba(33, 150, 243, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --heading-color: #64b5f6;
+    --border-color: #333;
+    --primary-color: #2196f3;
+    --primary-dark: #1565c0;
+    --popup-content-bg: radial-gradient(circle at center, rgba(30, 30, 30, 0.95), rgba(20, 20, 20, 0.9));
+    --feature-bg: rgba(40, 40, 40, 0.8);
+    --feature-border: rgba(33, 150, 243, 0.3);
+    --feature-hover-bg: rgba(33, 150, 243, 0.15);
+  }
+  
+  .popup-overlay::before {
+    opacity: 0.08;
+  }
+  
+  .welcome-popup {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  
+  .get-started-btn {
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.25);
+  }
+  
+  .get-started-btn:hover {
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+  }
+  
+  .welcome-feature:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
 }

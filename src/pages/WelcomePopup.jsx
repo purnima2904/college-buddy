@@ -69,24 +69,7 @@ function WelcomePopup({ onClose }) {
             We're excited to have you here. College Buddy is your ultimate companion for navigating 
             campus life at MIT ADT University. Explore our features to make the most of your college experience.
           </p>
-          <div className="welcome-features">
-            <div className="welcome-feature">
-              <i className="fas fa-map-marked-alt"></i>
-              <span>Interactive Campus Maps</span>
-            </div>
-            <div className="welcome-feature">
-              <i className="fas fa-chalkboard-teacher"></i>
-              <span>Teacher Availability</span>
-            </div>
-            <div className="welcome-feature">
-              <i className="fas fa-users"></i>
-              <span>College Clubs</span>
-            </div>
-            <div className="welcome-feature">
-              <i className="fas fa-book"></i>
-              <span>Resource Sharing</span>
-            </div>
-          </div>
+          
           <button className="get-started-btn" onClick={onClose}>
             Get Started
           </button>
