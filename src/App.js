@@ -1,16 +1,17 @@
-import React from 'react'
-import Home from './pages/Home'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './AuthContext';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import TeacherAvailability from './pages/TeacherAvailability';
-import { AuthProvider, useAuth } from './AuthContext';
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 import TeacherSeating from './pages/TeacherSeating';
-import ClubsPage from './pages/ClubsPage'
+import ClubsPage from './pages/ClubsPage';
 import ClubDetailPage from './pages/ClubDetailPage';
 import ScrollToTopButton from './pages/ScrollToTopButton';
 import Transport from './pages/Transport';
 import AlumniConnect from './pages/AlumniConnect';
+import WelcomePopup from './pages/WelcomePopup';
 
 const ProtectedRoute = ({ element, role, ...rest }) => {
   const { isAuthenticated, currentUser } = useAuth();
@@ -28,28 +29,41 @@ const ProtectedRoute = ({ element, role, ...rest }) => {
   return element;
 };
 
-
 function App() {
   return (
     <AuthProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path='/Home' element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/teacher-seating" element={<TeacherSeating />} />
-        <Route path="/teacher-availability" element={<TeacherAvailability />} />
-        <Route path="/clubs" element={<ClubsPage />} />
-        <Route path="/clubs/:clubId" element={<ClubDetailPage />} />
-        <Route path="/transport" element={<Transport />} />
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/alumni" element={<AlumniConnect />} />
-
-      </Routes>
-      <ScrollToTopButton />
-    </BrowserRouter>
+      <Router>
+        <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/WelcomePopup" element={<WelcomePopup />} />
+          <Route path="/home" element={
+            <ProtectedRoute element={<Home />} />
+          } />
+          <Route path="/teacher-availability" element={
+            <ProtectedRoute element={<TeacherAvailability />} />
+          } />
+          <Route path="/teacher-seating" element={
+            <ProtectedRoute element={<TeacherSeating />} />
+          } />
+          <Route path="/clubs" element={
+            <ProtectedRoute element={<ClubsPage />} />
+          } />
+          <Route path="/clubs/:clubId" element={
+            <ProtectedRoute element={<ClubDetailPage />} />
+          } />
+          <Route path="/transport" element={
+            <ProtectedRoute element={<Transport />} />
+          } />
+          <Route path="/alumni" element={
+            <ProtectedRoute element={<AlumniConnect />} />
+          } />
+        </Routes>
+        <ScrollToTopButton />
+      </Router>
     </AuthProvider>
   );
 }
 
-export default App
+export default App;

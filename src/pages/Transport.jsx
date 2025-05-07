@@ -70,7 +70,7 @@ function Transport() {
 
     // Go back to home
     const goToHome = () => {
-        navigate('/');
+        navigate('/home');
     };
 
     // Select a route to view details

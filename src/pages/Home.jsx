@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import WelcomePopup from './WelcomePopup';
 
 function Home() {
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -8,10 +9,25 @@ function Home() {
     const [showMapPopup, setShowMapPopup] = useState(false);
     const [showImagePopup, setShowImagePopup] = useState(false);
     const [showTeacherOptionsPopup, setShowTeacherOptionsPopup] = useState(false);
+    const [showWelcomePopup, setShowWelcomePopup] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const navigate = useNavigate();
-    const { currentUser, logout } = useAuth(); // Get current user and logout function from auth context
+    const { currentUser, logout, isNewLogin, resetNewLoginFlag } = useAuth(); 
 
+    // Check if this is a new login to show welcome popup
+    useEffect(() => {
+        console.log("Checking isNewLogin:", isNewLogin);
+        if (isNewLogin) {
+          console.log("New login detected, showing welcome popup");
+          setShowWelcomePopup(true);
+        }
+      }, [isNewLogin]);
+      
+      const handleCloseWelcomePopup = () => {
+        console.log("Closing welcome popup");
+        setShowWelcomePopup(false);
+        resetNewLoginFlag(); // Reset the flag in auth context
+      };
     // Initialize theme on component mount
     useEffect(() => {
         // Check for saved theme preference or use preferred color scheme
@@ -41,8 +57,7 @@ function Home() {
     // Handle logout
     const handleLogout = () => {
         logout();
-        // Optional: navigate to home or login page
-        // navigate('/');
+        navigate('/login');
     };
 
     // Handle tab click
@@ -61,7 +76,7 @@ function Home() {
 
     const handleClick = () => {
         if (!currentUser) {
-            navigate('/login'); // Replace with your actual login route
+            navigate('/login');
         }
     };
 
@@ -247,6 +262,9 @@ function Home() {
             <div className="bg"></div>
             <div className="bg bg2"></div>
             <div className="bg bg3"></div>
+
+            {/* Welcome Popup */}
+            {showWelcomePopup && <WelcomePopup onClose={handleCloseWelcomePopup} />}
 
             <div className="container">
 

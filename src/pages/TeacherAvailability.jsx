@@ -53,7 +53,7 @@ function TeacherAvailability() {
         localStorage.removeItem('authToken'); // Adjust based on how you store auth data
         
         // Navigate to home or login page
-        navigate('/'); // or navigate('/login') depending on your app flow
+        navigate('/home'); // or navigate('/login') depending on your app flow
         };
 
     // If authenticated but loading, show loading state

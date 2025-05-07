@@ -10,6 +10,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isNewLogin, setIsNewLogin] = useState(false); // Add isNewLogin state
 
   // Check if user is already logged in when component mounts
   useEffect(() => {
@@ -24,7 +25,13 @@ export const AuthProvider = ({ children }) => {
   const login = (user) => {
     localStorage.setItem('user', JSON.stringify(user));
     setCurrentUser(user);
+    setIsNewLogin(true); // Set isNewLogin to true when user logs in
     return true;
+  };
+
+  // Reset new login flag
+  const resetNewLoginFlag = () => {
+    setIsNewLogin(false);
   };
 
   // Logout function
@@ -63,7 +70,9 @@ export const AuthProvider = ({ children }) => {
     register,
     isAuthenticated: !!currentUser,
     isTeacher: currentUser?.type === 'teacher',
-    isStudent: currentUser?.type === 'student'
+    isStudent: currentUser?.type === 'student',
+    isNewLogin,           // Add isNewLogin to context value
+    resetNewLoginFlag     // Add resetNewLoginFlag function to context value
   };
 
   return (

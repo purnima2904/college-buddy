@@ -378,7 +378,7 @@ const handleUpdateProfile = (alum) => {
 
             <div className="container">
                 <header>
-                    <button className="back-home-button" onClick={() => navigate('/')}>
+                    <button className="back-home-button" onClick={() => navigate('/home')}>
                         Back to Home
                     </button>
                     <div className="logo">Alumni Connect</div>
