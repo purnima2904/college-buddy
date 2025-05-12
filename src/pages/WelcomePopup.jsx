@@ -15,7 +15,7 @@ function WelcomePopup({ onClose }) {
     const colors = ['#2196f3', '#ff5722', '#4caf50', '#9c27b0', '#ff9800', '#e91e63'];
     
     // Create multiple graduation caps
-    const numberOfCaps = 12;
+    const numberOfCaps = 60;
     for (let i = 0; i < numberOfCaps; i++) {
       const cap = document.createElement('div');
       cap.className = 'floating-cap';
