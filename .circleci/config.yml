@@ -8,9 +8,14 @@ jobs:
       - image: cimg/node:18.16
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
-          app-dir: ./college-buddy
+      - run:
+          name: List directory structure to debug
+          command: |
+            ls -la
+            ls -la college-buddy
+      - run:
+          name: Install dependencies
+          command: cd college-buddy && npm install
       - run:
           name: Run linting
           command: cd college-buddy && npm run lint
