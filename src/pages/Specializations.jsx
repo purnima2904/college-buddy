@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import './css/Specializations.css';
@@ -11,10 +11,11 @@ const Specializations = () => {
     const [showEditForm, setShowEditForm] = useState(false);
     const [editSubjectId, setEditSubjectId] = useState(null);
     const [editSpecializationId, setEditSpecializationId] = useState(null);
-    const [newSubject, setNewSubject] = useState({
+const [newSubject, setNewSubject] = useState({
         name: '',
         credits: '',
-        description: ''
+        description: '',
+        documentLink: ''
     });
     const navigate = useNavigate();
     const { currentUser } = useAuth();
@@ -209,6 +210,15 @@ const Specializations = () => {
         });
     };
 
+    // Function to handle opening a document link
+    const handleOpenDocument = (link) => {
+        if (link) {
+            window.open(link, '_blank');
+        } else {
+            alert('No document link available for this subject.');
+        }
+    };
+
     // Function to handle adding a new subject
     const handleAddSubject = (e) => {
         e.preventDefault();
@@ -304,7 +314,8 @@ const Specializations = () => {
         setNewSubject({
             name: '',
             credits: '',
-            description: ''
+            description: '',
+            documentLink: ''
         });
     };
 
@@ -432,6 +443,15 @@ const Specializations = () => {
                                         required
                                     ></textarea>
                                 </div>
+                                <div className="form-group">
+                                    <label>Document Link (Google Drive):</label>
+                                    <input
+                                        type="url"
+                                        name="documentLink"
+                                        value={newSubject.documentLink}
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
                                 <div className="form-actions">
                                     <button type="submit" className="submit-button">
                                         <i className="fas fa-save"></i> Save Subject
@@ -495,6 +515,15 @@ const Specializations = () => {
                                         required
                                     ></textarea>
                                 </div>
+                                <div className="form-group">
+                                    <label>Document Link (Google Drive):</label>
+                                    <input
+                                        type="url"
+                                        name="documentLink"
+                                        value={newSubject.documentLink}
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
                                 <div className="form-actions">
                                     <button type="submit" className="submit-button">
                                         <i className="fas fa-save"></i> Update Subject
@@ -557,10 +586,17 @@ const Specializations = () => {
                                             <div className="subject-card-body">
                                                 <p className="subject-description">{subject.description}</p>
                                             </div>
-                                            <div className="subject-card-footer">
+                                            <div className="subject-card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <button 
+                                                    className="document-button"
+                                                    onClick={() => handleOpenDocument(subject.documentLink)}
+                                                    style={{ marginRight: 'auto' }}
+                                                >
+                                                    <i className="fas fa-file-alt"></i> Documents
+                                                </button>
                                                 {/* Teacher actions */}
                                                 {(isTeacher || window.location.search.includes('debug=teacher')) && (
-                                                    <div className="teacher-actions">
+                                                    <div className="teacher-actions" style={{ display: 'flex', gap: '8px' }}>
                                                         <button 
                                                             className="edit-button"
                                                             onClick={() => startEditSubject(specialization.id, subject)}
