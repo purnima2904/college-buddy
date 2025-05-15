@@ -1,54 +1,27 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:node:.
 version: 2.1
 orbs:
-  node: circleci/node@5
+  node: circleci/node@5.0.3
+
 jobs:
-  test-node:
-    # Install node dependencies and run tests
-    executor: node/default
+  test-frontend:
+    docker:
+      - image: cimg/node:18.16
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: npm
+          app-dir: ./college-buddy
+      - run:
+          name: Run linting
+          command: cd college-buddy && npm run lint
       - run:
           name: Run tests
-          command: npm test --passWithNoTests
-  build-node:
-    # Build node project
-    executor: node/default
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
+          command: cd college-buddy && npm test -- --watchAll=false
       - run:
-          command: npm run build
-      - run:
-          name: Create the ~/artifacts directory if it doesn't exist
-          command: mkdir -p ~/artifacts
-      # Copy output to artifacts dir
-      - run:
-          name: Copy artifacts
-          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
-      - store_artifacts:
-          path: ~/artifacts
-          destination: node-build
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # Replace this with steps to deploy to users
-      - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Check build
+          command: cd college-buddy && npm run build
+
 workflows:
-  build-and-test:
+  test-my-app:
     jobs:
-      - test-node
-      - build-node:
-          requires:
-            - test-node
-    # - deploy:
-    #     requires:
-    #       - build-node
+      - test-frontend
