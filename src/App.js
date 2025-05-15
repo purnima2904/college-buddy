@@ -12,6 +12,9 @@ import ScrollToTopButton from './pages/ScrollToTopButton';
 import Transport from './pages/Transport';
 import AlumniConnect from './pages/AlumniConnect';
 import WelcomePopup from './pages/WelcomePopup';
+import FirstYear from './pages/FirstYear';
+import SecondYear from './pages/SecondYear';
+import Specializations from './pages/Specializations';
 
 const ProtectedRoute = ({ element, role, ...rest }) => {
   const { isAuthenticated, currentUser } = useAuth();
@@ -59,6 +62,9 @@ function App() {
           <Route path="/alumni" element={
             <ProtectedRoute element={<AlumniConnect />} />
           } />
+          <Route path="/resources/first-year" element={<FirstYear />} />
+          <Route path="/resources/second-year" element={<SecondYear />} />
+          <Route path="/resources/specializations" element={<Specializations />} />
         </Routes>
         <ScrollToTopButton />
       </Router>

@@ -310,15 +310,6 @@
     border: none;
 }
 
-.join-btn {
-    background-color: #0066cc;
-    color: white;
-}
-
-.join-btn:hover {
-    background-color: #0055aa;
-}
-
 .no-results {
     grid-column: 1 / -1;
     text-align: center;

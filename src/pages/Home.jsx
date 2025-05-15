@@ -8,6 +8,7 @@ function Home() {
     const [activeTab, setActiveTab] = useState('Home');
     const [showMapPopup, setShowMapPopup] = useState(false);
     const [showImagePopup, setShowImagePopup] = useState(false);
+    const [showResourcePopup, setShowResourcePopup] = useState(false);
     const [showTeacherOptionsPopup, setShowTeacherOptionsPopup] = useState(false);
     const [showWelcomePopup, setShowWelcomePopup] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -21,13 +22,14 @@ function Home() {
           console.log("New login detected, showing welcome popup");
           setShowWelcomePopup(true);
         }
-      }, [isNewLogin]);
+    }, [isNewLogin]);
       
-      const handleCloseWelcomePopup = () => {
+    const handleCloseWelcomePopup = () => {
         console.log("Closing welcome popup");
         setShowWelcomePopup(false);
         resetNewLoginFlag(); // Reset the flag in auth context
-      };
+    };
+
     // Initialize theme on component mount
     useEffect(() => {
         // Check for saved theme preference or use preferred color scheme
@@ -92,6 +94,12 @@ function Home() {
         setShowMapPopup(true);
     };
 
+    // Handle resource button click
+    const handleResourceButtonClick = (e) => {
+        e.stopPropagation(); // Prevent card click event
+        setShowResourcePopup(true);
+    };
+
     const campusMapImages = [
         { src: "/assets/campus-map.jpg", alt: "MIT ADT Campus Map - Main View" },
         { src: "/assets/campus-map-2.jpg", alt: "MIT ADT Campus Map - Academic Buildings" },
@@ -153,6 +161,7 @@ function Home() {
         setShowMapPopup(false);
         setShowImagePopup(false);
         setShowTeacherOptionsPopup(false);
+        setShowResourcePopup(false);
     };
 
     // Function to determine if a card should be visible based on active tab
@@ -180,7 +189,8 @@ function Home() {
             color: 'color1',
             description: 'Never get lost again with our detailed interactive campus map featuring building floor plans, classroom locations, amenities, and accessibility routes. Search for specific locations and get directions from your current position.',
             buttonText: 'Explore Map',
-            hasCustomOptions: true
+            hasCustomOptions: true,
+            customHandler: handleMapButtonClick
         },
         {
             id: 'teacher-availability',
@@ -224,7 +234,9 @@ function Home() {
             icon: 'fas fa-book',
             color: 'color4',
             description: 'Access a comprehensive library of academic resources including lecture notes, study guides, practice exams, and tutorials shared by students and faculty. Filter by course, subject, or professor to find exactly what you need for academic success.',
-            buttonText: 'Access Resources'
+            buttonText: 'Access Resources',
+            hasCustomOptions: true,
+            customHandler: handleResourceButtonClick
         },
         {
             id: 'peer-study-groups',
@@ -338,7 +350,7 @@ function Home() {
                                     {card.hasCustomOptions ? (
                                         <button
                                             className="btn"
-                                            onClick={card.title === 'Interactive Campus Map' ? handleMapButtonClick : card.customHandler}
+                                            onClick={card.customHandler}
                                         >
                                             {card.buttonText}
                                         </button>
@@ -415,7 +427,7 @@ function Home() {
                                     </div>
                                     <div className="option-details">
                                         <h4>Seating Arrangement</h4>
-                                        <p>View the seating arrangements and the loations of all faultu members</p>
+                                        <p>View the seating arrangements and the locations of all faculty members</p>
                                     </div>
                                 </div>
                             </div>
@@ -449,6 +461,63 @@ function Home() {
                                         <button onClick={goToNextImage}>
                                             <i className="fas fa-chevron-right"></i>
                                         </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Resource Options Popup */}
+                {showResourcePopup && (
+                    <div className="popup-overlay" onClick={handleClosePopup}>
+                        <div className="map-popup" onClick={(e) => e.stopPropagation()}>
+                            <div className="popup-header color4">
+                                <h3>Select Resource Category</h3>
+                                <button className="close-btn" onClick={handleClosePopup}>
+                                    <i className="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div className="popup-content">
+                                <div className="map-option-card" onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate('/resources/first-year');
+                                    setShowResourcePopup(false);
+                                }}>
+                                    <div className="option-icon">
+                                        <i className="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <div className="option-details">
+                                        <h4>First Year</h4>
+                                        <p>Access study materials, notes, and resources for first year courses</p>
+                                    </div>
+                                </div>
+
+                                <div className="map-option-card" onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate('/resources/second-year');
+                                    setShowResourcePopup(false);
+                                }}>
+                                    <div className="option-icon">
+                                        <i className="fas fa-book-reader"></i>
+                                    </div>
+                                    <div className="option-details">
+                                        <h4>Second Year</h4>
+                                        <p>Browse resources for second year subjects and courses</p>
+                                    </div>
+                                </div>
+
+                                <div className="map-option-card" onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate('/resources/specializations');
+                                    setShowResourcePopup(false);
+                                }}>
+                                    <div className="option-icon">
+                                        <i className="fas fa-laptop-code"></i>
+                                    </div>
+                                    <div className="option-details">
+                                        <h4>Specializations</h4>
+                                        <p>Resources for third and fourth year specialization tracks</p>
                                     </div>
                                 </div>
                             </div>
