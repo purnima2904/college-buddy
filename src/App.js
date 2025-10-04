@@ -15,6 +15,7 @@ import WelcomePopup from './pages/WelcomePopup';
 import FirstYear from './pages/FirstYear';
 import SecondYear from './pages/SecondYear';
 import Specializations from './pages/Specializations';
+import PeerStudy from './pages/PeerStudy';
 
 const ProtectedRoute = ({ element, role, ...rest }) => {
   const { isAuthenticated, currentUser } = useAuth();
@@ -65,6 +66,7 @@ function App() {
           <Route path="/resources/first-year" element={<FirstYear />} />
           <Route path="/resources/second-year" element={<SecondYear />} />
           <Route path="/resources/specializations" element={<Specializations />} />
+          <Route path="/study-groups" element={<PeerStudy />} />
         </Routes>
         <ScrollToTopButton />
       </Router>

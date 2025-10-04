@@ -27,19 +27,16 @@ function Home() {
     const handleCloseWelcomePopup = () => {
         console.log("Closing welcome popup");
         setShowWelcomePopup(false);
-        resetNewLoginFlag(); // Reset the flag in auth context
+        resetNewLoginFlag();
     };
 
     // Initialize theme on component mount
     useEffect(() => {
-        // Check for saved theme preference or use preferred color scheme
         const savedTheme = localStorage.getItem('theme');
-
         if (savedTheme) {
             document.documentElement.setAttribute('data-theme', savedTheme);
             setIsDarkMode(savedTheme === 'dark');
         } else {
-            // Check if user prefers dark mode
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             if (prefersDark) {
                 document.documentElement.setAttribute('data-theme', 'dark');
@@ -72,6 +69,8 @@ function Home() {
         if (!isButton) {
             if (title === 'Teacher Availability') {
                 handleTeacherButtonClick();
+            } else if (title === 'Peer Study Groups') {
+                handleStudyGroupButtonClick();
             }
         }
     };
@@ -84,27 +83,37 @@ function Home() {
 
     // Handle teacher button click
     const handleTeacherButtonClick = (e) => {
-        if (e) e.stopPropagation(); // Prevent card click event
+        if (e) e.stopPropagation();
         setShowTeacherOptionsPopup(true);
     };
 
     // Handle map button click
     const handleMapButtonClick = (e) => {
-        e.stopPropagation(); // Prevent card click event
+        e.stopPropagation();
         setShowMapPopup(true);
     };
 
     // Handle resource button click
     const handleResourceButtonClick = (e) => {
-        e.stopPropagation(); // Prevent card click event
+        e.stopPropagation();
         setShowResourcePopup(true);
+    };
+
+    // Handle study group button click
+    const handleStudyGroupButtonClick = (e) => {
+        e.stopPropagation();
+        if (currentUser) {
+            navigate('/study-groups');
+        } else {
+            navigate('/login');
+        }
     };
 
     const campusMapImages = [
         { src: "/assets/campus-map.jpg", alt: "MIT ADT Campus Map - Main View" },
         { src: "/assets/campus-map-2.jpg", alt: "MIT ADT Campus Map - Academic Buildings" },
-        { src: "/assets/campus-map-3.jpg", alt: "MIT ADT Campus Map " },
-        { src: "/assets/campus-map-4.jpg", alt: "MIT ADT Campus Map " }
+        { src: "/assets/campus-map-3.jpg", alt: "MIT ADT Campus Map" },
+        { src: "/assets/campus-map-4.jpg", alt: "MIT ADT Campus Map" }
     ];
 
     // Functions to handle image navigation
@@ -124,14 +133,11 @@ function Home() {
 
     // Handle map option selection
     const handleMapOptionClick = (option, e) => {
-        e.stopPropagation(); // Prevent card click event
-
+        e.stopPropagation();
         if (option === 'explore360') {
-            // Open 360 degree campus tour in new tab
             window.open('https://www.iviewd.com/mitadt/', '_blank');
             setShowMapPopup(false);
         } else if (option === 'showImage') {
-            // Close the options popup and show the image popup
             setShowMapPopup(false);
             setShowImagePopup(true);
         }
@@ -139,10 +145,8 @@ function Home() {
 
     // Handle teacher option selection
     const handleTeacherOptionClick = (option, e) => {
-        e.stopPropagation(); // Prevent card click event
-
+        e.stopPropagation();
         if (option === 'teacherInfo') {
-            // Check if user is logged in
             if (currentUser) {
                 navigate('/teacher-availability');
             } else {
@@ -150,7 +154,6 @@ function Home() {
             }
             setShowTeacherOptionsPopup(false);
         } else if (option === 'seatingArrangement') {
-            // Navigate to seating arrangement page
             navigate('/teacher-seating');
             setShowTeacherOptionsPopup(false);
         }
@@ -167,16 +170,14 @@ function Home() {
     // Function to determine if a card should be visible based on active tab
     const shouldShowCard = (cardName) => {
         if (activeTab === 'Home') {
-            return true; // Show all cards on Home tab
+            return true;
         }
-
         const tabCardMapping = {
             'Schedule': ['Teacher Availability'],
             'Clubs': ['College Clubs'],
-            'Resources': ['Resource Sharing', 'Peer Study Groups', 'Discussion Forums', 'Alumni Connect'], // Added 'Alumni Connect' to Resources tab
+            'Resources': ['Resource Sharing', 'Peer Study Groups', 'Discussion Forums', 'Alumni Connect'],
             'Transport': ['Campus Transport']
         };
-
         return tabCardMapping[activeTab]?.includes(cardName) || false;
     };
 
@@ -244,7 +245,9 @@ function Home() {
             icon: 'fas fa-user-graduate',
             color: 'color6',
             description: 'Connect with fellow students for collaborative learning experiences. Create or join course-specific study groups, schedule sessions in available campus spaces, and share resources to boost your understanding and academic performance.',
-            buttonText: 'Join Groups'
+            buttonText: 'Explore Groups',
+            hasCustomOptions: true,
+            customHandler: handleStudyGroupButtonClick
         },
         {
             id: 'alumni-connect',
@@ -279,7 +282,6 @@ function Home() {
             {showWelcomePopup && <WelcomePopup onClose={handleCloseWelcomePopup} />}
 
             <div className="container">
-
                 <center><img src="/assets/MITADT.png" alt="MITADT" /></center>
 
                 <header>
@@ -299,7 +301,6 @@ function Home() {
                             </div>
                         </label>
 
-                        {/* Updated User Profile Section with Dropdown */}
                         <div className="user-profile">
                             <div className="user-avatar">
                                 <i className="fas fa-user"></i>
@@ -385,7 +386,6 @@ function Home() {
                                         <p>Experience an immersive virtual tour of our campus with 360-degree views</p>
                                     </div>
                                 </div>
-
                                 <div className="map-option-card" onClick={(e) => handleMapOptionClick('showImage', e)}>
                                     <div className="option-icon">
                                         <i className="fas fa-image"></i>
@@ -420,7 +420,6 @@ function Home() {
                                         <p>View detailed information about faculty members, their office hours, and contact details</p>
                                     </div>
                                 </div>
-
                                 <div className="map-option-card" onClick={(e) => handleTeacherOptionClick('seatingArrangement', e)}>
                                     <div className="option-icon">
                                         <i className="fas fa-chair"></i>
@@ -452,7 +451,6 @@ function Home() {
                                         alt={campusMapImages[currentImageIndex].alt}
                                         className="campus-map"
                                     />
-
                                     <div className="image-navigation">
                                         <button onClick={goToPreviousImage}>
                                             <i className="fas fa-chevron-left"></i>
@@ -492,7 +490,6 @@ function Home() {
                                         <p>Access study materials, notes, and resources for first year courses</p>
                                     </div>
                                 </div>
-
                                 <div className="map-option-card" onClick={(e) => {
                                     e.stopPropagation();
                                     navigate('/resources/second-year');
@@ -506,7 +503,6 @@ function Home() {
                                         <p>Browse resources for second year subjects and courses</p>
                                     </div>
                                 </div>
-
                                 <div className="map-option-card" onClick={(e) => {
                                     e.stopPropagation();
                                     navigate('/resources/specializations');
@@ -536,11 +532,9 @@ function Home() {
                                 <p><i className="fas fa-phone"></i> +91 98765 43210</p>
                             </div>
                         </div>
-
                         <div className="footer-section links">
                             <h4>Quick Links</h4>
                             <ul>
-                                {/* Fixed href warnings by using buttons styled as links */}
                                 <li><button className="link-button" onClick={() => handleTabClick('Home')}>Home</button></li>
                                 <li><button className="link-button" onClick={() => handleTabClick('Schedule')}>Schedule</button></li>
                                 <li><button className="link-button" onClick={() => handleTabClick('Clubs')}>Clubs</button></li>
@@ -548,11 +542,9 @@ function Home() {
                                 <li><button className="link-button" onClick={() => handleTabClick('Transport')}>Transport</button></li>
                             </ul>
                         </div>
-
                         <div className="footer-section social">
                             <h4>Connect With Us</h4>
                             <div className="social-icons">
-                                {/* Fixed href warnings by using buttons styled as links with appropriate aria-labels */}
                                 <button className="social-button" aria-label="Facebook">
                                     <i className="fab fa-facebook"></i>
                                 </button>
@@ -572,7 +564,7 @@ function Home() {
                         </div>
                     </div>
                     <div className="footer-bottom">
-                        <p>&copy; {new Date().getFullYear()} College Buddy | MIT ADT University | All Rights Reserved</p>
+                        <p>© {new Date().getFullYear()} College Buddy | MIT ADT University | All Rights Reserved</p>
                         <div className="footer-bottom-links">
                             <button className="link-button">Privacy Policy</button>
                             <button className="link-button">Terms of Service</button>
